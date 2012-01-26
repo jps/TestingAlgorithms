@@ -1,0 +1,5 @@
+c:\users\panda\documents\visual studio 2010\Projects\TestingAlgorithms\TestingAlgorithms\bin\Debug\TestingAlgorithms.exe
+c:\users\panda\documents\visual studio 2010\Projects\TestingAlgorithms\TestingAlgorithms\bin\Debug\TestingAlgorithms.pdb
+c:\users\panda\documents\visual studio 2010\Projects\TestingAlgorithms\TestingAlgorithms\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\panda\documents\visual studio 2010\Projects\TestingAlgorithms\TestingAlgorithms\obj\x86\Debug\TestingAlgorithms.exe
+c:\users\panda\documents\visual studio 2010\Projects\TestingAlgorithms\TestingAlgorithms\obj\x86\Debug\TestingAlgorithms.pdb
