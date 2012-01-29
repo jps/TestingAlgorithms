@@ -9,14 +9,10 @@ namespace TestingAlgorithms
     class Program
     {
 
-
-        
-
         static void Main(string[] args)
         {
 
-            List<Int32> UnorderedList = new List<Int32>( new Int32[]{ 13, 4, 62, 7, 8, 9, 0, 12});
-
+            List<Int32> _UnorderedList = GenrateRandomUnorderedList(10, 0, 100); //new List<Int32>( new Int32[]{ 13, 4, 62, 7, 8, 9, 0, 12});
             bool active = true;
             while (active)
             {
@@ -24,12 +20,14 @@ namespace TestingAlgorithms
                 Console.Out.WriteLine("\n");
                 Console.Out.WriteLine("1 QuickSort");
                 Console.Out.WriteLine("2 Bubble Sort");
-                Console.Out.WriteLine("3 Insertion Sort");
+                Console.Out.WriteLine("3 Heap Sort");
+                Console.Out.WriteLine("4 Generate new rand sequence");
                 Console.Out.WriteLine("x to quit");
                 Console.Out.WriteLine("Input the number of the Algorithm you would like to be demonstrated:");
                 Console.Out.WriteLine("\n");
 
                 String In = Console.In.ReadLine(); //Console read line
+                List<Int32> UnorderedList = new List<Int32>(_UnorderedList); //new List<Int32>( new Int32[]{ 13, 4, 62, 7, 8, 9, 0, 12});
                 List<Int32> OrderedList = new List<Int32>();
                 switch (In)
                 {
@@ -48,7 +46,26 @@ namespace TestingAlgorithms
                         Console.Out.WriteLine("\n");
                         break;
                     case "3":
-                        Console.Out.WriteLine("Sorry this is not implemented");
+                        Console.Out.WriteLine("\n");
+                        Console.Out.WriteLine("UnorderedList :" + PrintList(UnorderedList));
+                        //HeapSort nhs = new HeapSort(UnorderedList;)
+                        OrderedList = HeapSort.Sort(UnorderedList.ToArray()).ToList();
+                        //OrderedList = nhs.UnorderedList.ToList();
+                        Console.Out.WriteLine("OrderedList :" + PrintList(OrderedList));
+                        Console.Out.WriteLine("\n");
+
+                        break;
+                    case "4":
+                        Console.Out.WriteLine("amount : ");
+                        In = Console.In.ReadLine(); //Console read line
+
+                        Int32 amount;
+                        try{
+                            amount = Int32.Parse(In);
+                        }catch{
+                            amount = 10; 
+                        }
+                        _UnorderedList = GenrateRandomUnorderedList(amount, 0, 100); //new List<Int32>( new Int32[]{ 13, 4, 62, 7, 8, 9, 0, 12});
                         break;
                     case "x" :
                     case "X" :
@@ -62,6 +79,17 @@ namespace TestingAlgorithms
         }
 
 
+        static List<Int32> GenrateRandomUnorderedList(Int32 Amount, Int32 Min = Int32.MinValue, Int32 Max = Int32.MaxValue )
+        {
+            List<Int32> UnorderedList = new List<Int32>();
+            Random rand = new Random();
+            for (int i = 0; i < Amount; i++)
+            {
+                UnorderedList.Add(rand.Next(Min, Max));
+            }
+            return UnorderedList;
+        }
+        
         static String PrintList(List<Int32> List)
         {
             String Out = "";
@@ -92,32 +120,133 @@ namespace TestingAlgorithms
         }
 
 
-        static List<Int32> HeapSort(List<Int32> UnorderedList)
-        {
-            //System.Collections.
 
-            throw new NotImplementedException(); 
+        class HeapSort
+        {
+            private static void Adjust(int[] list, int i, int m)
+            {
+                int Temp = list[i];
+                int j = i * 2 + 1;
+
+                while (j <= m)
+                {
+                    //more children
+                    if (j < m)
+                        if (list[j] < list[j + 1])
+                            j = j + 1;
+
+                    //compare roots and the older children
+                    if (Temp < list[j])
+                    {
+                        list[i] = list[j];
+                        i = j;
+                        j = 2 * i + 1;
+                    }
+                    else
+                    {
+                        j = m + 1;
+                    }
+                }
+
+                list[i] = Temp;
+            }
+
+            public static int[] Sort (int[] list)
+            {
+                //build the initial heap
+                for (int i = (list.Length - 1) / 2; i >= 0; i--)
+                    Adjust (list, i, list.Length - 1);
+ 
+                //swap root node and the last heap node
+                for (int i = list.Length - 1; i >= 1; i--)
+                {
+                    int Temp = list [0];
+                    list [0] = list [i];
+                    list [i] = Temp;
+                    Adjust (list, 0, i - 1);
+                }
+
+                return list;
+            }
+            /*
+            public virtual Int32[] UnorderedList { get; set; }
+
+            public HeapSort(List<Int32> _UnorderedList)
+            {
+                UnorderedList = new Int32[_UnorderedList.Count + 2];
+                UnorderedList = _UnorderedList.ToArray(); 
+                Sort();
+            }
+
+             void Sort()
+            {
+                int i;
+                int temp;
+                for (i = (UnorderedList.Count() /2)-1; i >= 0; i--)
+                {
+                    siftDown(i, UnorderedList.Count());
+                }
+                for (i = UnorderedList.Count() - 1; i >= 1; i--)
+                {
+                    temp = UnorderedList[0];
+                    UnorderedList[0] = UnorderedList[i];
+                    UnorderedList[i] = temp;
+                    siftDown(0, UnorderedList.Count() - 1);
+                }
+            }
+
+            void siftDown(int root, int bottom)
+            {
+                bool done = false;
+                int maxChild;
+                int temp;
+
+                while ((root * 2 <= bottom) && (!done))
+                {
+                    if (root * 2 == bottom)
+                        maxChild = root * 2;
+                    else if (UnorderedList[root * 2] > UnorderedList[root * 2 + 1])
+                        maxChild = root * 2;
+                    else
+                        maxChild = root * 2 + 1;
+
+                    if (UnorderedList[root] < UnorderedList[maxChild])
+                    {
+                        temp = UnorderedList[root];
+                        UnorderedList[root] = UnorderedList[maxChild];
+                        UnorderedList[maxChild] = temp;
+                        root = maxChild;
+                    }
+                    else
+                    {
+                        done = true;
+                    }
+                }
+            }*/
         }
+
 
         static List<Int32> BubbleSort(List<Int32> UnorderedList)
         {
-
             bool swapped; 
             do
             {
                 swapped = false;
-                for (int i = 1; i < UnorderedList.Count; ++i)
+                for (int i = 1; i < UnorderedList.Count; ++i)//for each item in list
                 {
-                    if (UnorderedList[i - 1] > UnorderedList[i])
+                    if (UnorderedList[i - 1] > UnorderedList[i])//if item on left is greater than item on right swap.
                     {
-                        Int32 hold = UnorderedList[i - 1];
-                        UnorderedList[i - 1] = UnorderedList[i];
-                        UnorderedList[i] = hold;
+                        Int32 hold = UnorderedList[i - 1]; //temp hold the value
+                        UnorderedList[i - 1] = UnorderedList[i]; //shift value left
+                        UnorderedList[i] = hold;//insert held value
                         swapped = true;
                     }
                 }
-            } while (swapped != false);
+            } while (swapped != false); //if no values were swapped this iteration list is sorted
             return UnorderedList;
         }
     }
 }
+
+
+
