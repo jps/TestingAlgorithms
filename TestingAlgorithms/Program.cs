@@ -123,15 +123,15 @@ namespace TestingAlgorithms
 
         class HeapSort
         {
-            private static void Adjust(int[] list, int i, int m)
+            private static void Adjust(int[] list, int i, int size)
             {
-                int Temp = list[i];
-                int j = i * 2 + 1;
+                int Temp = list[i]; //temp value
+                int j = i * 2 + 1; //double current index and increment to get children
 
-                while (j <= m)
+                while (j <= size)
                 {
                     //more children
-                    if (j < m)
+                    if (j < size)
                         if (list[j] < list[j + 1])
                             j = j + 1;
 
@@ -143,12 +143,10 @@ namespace TestingAlgorithms
                         j = 2 * i + 1;
                     }
                     else
-                    {
-                        j = m + 1;
-                    }
+                        j = size + 1; //increment j
                 }
 
-                list[i] = Temp;
+                list[i] = Temp; //replace item
             }
 
             public static int[] Sort (int[] list)
@@ -156,8 +154,11 @@ namespace TestingAlgorithms
                 //build the initial heap
                 for (int i = (list.Length - 1) / 2; i >= 0; i--)
                     Adjust (list, i, list.Length - 1);
- 
-                //swap root node and the last heap node
+
+                foreach( var a in list)
+                Console.Out.WriteLine(a);
+
+                //swap root node and the last heap node 
                 for (int i = list.Length - 1; i >= 1; i--)
                 {
                     int Temp = list [0];
@@ -168,61 +169,6 @@ namespace TestingAlgorithms
 
                 return list;
             }
-            /*
-            public virtual Int32[] UnorderedList { get; set; }
-
-            public HeapSort(List<Int32> _UnorderedList)
-            {
-                UnorderedList = new Int32[_UnorderedList.Count + 2];
-                UnorderedList = _UnorderedList.ToArray(); 
-                Sort();
-            }
-
-             void Sort()
-            {
-                int i;
-                int temp;
-                for (i = (UnorderedList.Count() /2)-1; i >= 0; i--)
-                {
-                    siftDown(i, UnorderedList.Count());
-                }
-                for (i = UnorderedList.Count() - 1; i >= 1; i--)
-                {
-                    temp = UnorderedList[0];
-                    UnorderedList[0] = UnorderedList[i];
-                    UnorderedList[i] = temp;
-                    siftDown(0, UnorderedList.Count() - 1);
-                }
-            }
-
-            void siftDown(int root, int bottom)
-            {
-                bool done = false;
-                int maxChild;
-                int temp;
-
-                while ((root * 2 <= bottom) && (!done))
-                {
-                    if (root * 2 == bottom)
-                        maxChild = root * 2;
-                    else if (UnorderedList[root * 2] > UnorderedList[root * 2 + 1])
-                        maxChild = root * 2;
-                    else
-                        maxChild = root * 2 + 1;
-
-                    if (UnorderedList[root] < UnorderedList[maxChild])
-                    {
-                        temp = UnorderedList[root];
-                        UnorderedList[root] = UnorderedList[maxChild];
-                        UnorderedList[maxChild] = temp;
-                        root = maxChild;
-                    }
-                    else
-                    {
-                        done = true;
-                    }
-                }
-            }*/
         }
 
 
